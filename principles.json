@@ -1,0 +1,65 @@
+[
+ {
+  "g": "Framing the work",
+  "d": "Before any research happens, what the team agrees it is building and why.",
+  "items": [
+   "**Artifacts are communication, not bureaucracy.** A user story is a placeholder for a conversation, not a spec — the written words matter less than the shared understanding they trigger. The same goes for the hierarchy above them: stories, epics and initiatives exist so a conversation can scale from \"what am I coding today\" to \"what are we doing this year.\" The moment any of it becomes documentation to be filed rather than talked about, it has stopped working.",
+   "**User first, solution last.** Whether you use user stories or job stories, describe the *why* before the *how*. Don't pre-decide the interface.",
+   "**Just-in-time detail, sprint-sized pieces.** Vague at the top of the backlog, concrete at the bottom — writing acceptance criteria for something you won't build for six months is waste. And if a piece doesn't fit in a sprint, split it by outcome, never by technical layer.",
+   "**Stories don't cover everything.** They're bad at UX journeys, visual design and technical architecture. Pair them with story maps, wireframes and diagrams."
+  ]
+ },
+ {
+  "g": "Choosing a method",
+  "d": "Picking the right research approach, and knowing how much of it you actually need.",
+  "items": [
+   "**Say ≠ do. Always.** Interviews, surveys and focus groups are all vulnerable to the gap between what people report and what they do. Contextual inquiry, diary studies, usability tests and analytics get you closer to actual behaviour. Triangulate.",
+   "**Match the method to the question, not to your comfort zone.** Rohrer's framework is the canonical way to do this: attitudinal vs. behavioural, qual vs. quant, product-use context, product stage — pick the intersection that answers the question in front of you. The most useful single instance of it: analytics tells you *where* flows break, qualitative tells you *why*. Neither alone gives the full picture, and most teams use one or two methods forever, which is a failure mode.",
+   "**Context beats interview room.** Contextual inquiry, field studies and diary studies all exist because taking people out of their environment strips away the details that matter most. Show, don't tell.",
+   "**Sample sizes are smaller than people assume, with caveats.** Usability testing: 5 users catches most issues. Contextual inquiry: 2 per user group, aim for 6, cap at 12. Diary studies: 5–12 for small discovery, 12–30 for large. Card sorting needs 15; quantitative studies need 20+. The 5-user rule only holds for qualitative testing with a homogeneous group — distinct segments need separate tests.",
+   "**Small tests run often beat big tests run rarely.** Nielsen's 5-user rule is really an argument about iteration. Three rounds of 5 users beat one round of 15, because you get to redesign in between."
+  ]
+ },
+ {
+  "g": "Talking to people",
+  "d": "Technique for the moment you are actually in the room with a user.",
+  "items": [
+   "**The master-apprentice mindset.** In any qualitative session the user is the expert and you are learning. Anyone from your team who joins needs to internalise this before they open their mouth.",
+   "**Play dumb, stay silent, never suggest options.** Users fill silences with the most interesting information, so be comfortable with pauses. Suggesting options anchors people to your list and hides their real behaviour. Playing dumb puts them in the teacher role, where they explain their actual mental model. The matching list of things never to do: leading questions, several questions at once, sharing your own opinions, judging the user, and taking wish-lists or design suggestions at face value. Users are not designers.",
+   "**Ask about behaviours, not feelings.** \"How did that make you feel?\" gets you nothing. \"What did you expect, what actually happened, what did you do next?\" gets you the whole story.",
+   "**Interviews are not chats.** They require rigour, preparation and specific technique. \"Just talking to users\" without structure produces bad data, which is worse than no data.",
+   "**Survey design is UX design.** Bad questions, biased scales, unclear framing and double-barrelled items all destroy your data. Pilot every survey with a colleague first. Two short surveys beat one bloated one.",
+   "**Diary studies plus interviews is a power combo.** The diary front-loads context so the interview can skip the \"learning the lingo\" phase and go straight to the interesting questions, grounded in real behaviour rather than speculation."
+  ]
+ },
+ {
+  "g": "Making sense of what you got",
+  "d": "The step between having data and having something you can design from.",
+  "items": [
+   "**Findings are facts. Insights are actionable underlying behaviours.** The difference is whether you can design from it: \"patients are non-compliant\" is a fact, \"patients are so nervous they don't listen to their doctors\" is designable. Getting from one to the other takes both analysis (identifying facts) and synthesis (the detective work of connecting patterns). Most teams only do the first and end up with reports rather than insights. Cooper-Wright's five-question test catches the difference: is it inspiring, does it have a story, is it new, will it impact design, is it relevant to the brief?",
+   "**Incubate.** Walk away for a day, do other work, come back and re-articulate. Everyone skips this because it feels unproductive, and it is the step that separates the insight you settled for from the one that is actually right.",
+   "**Download soon, synthesise after.** Extract key points immediately after each session while it is fresh, then bring everything together once research is complete. Synthesising as you go biases the interviews you haven't run yet.",
+   "**Provenance matters.** Every observation should trace back to who said it and in what context. Label post-its with participant names, number your notes. Without it you can't defend an insight or verify a surprising pattern.",
+   "**Siloed research is worse than no research, because it creates the illusion of insight.** Balance your methods, set a cadence, get researchers talking to each other. Otherwise you have four blind men and a broken product."
+  ]
+ },
+ {
+  "g": "Mapping experiences",
+  "d": "Thinking in sequences and systems rather than screens.",
+  "items": [
+   "**Flow-thinking beats page-thinking.** Design the sequence, then design the screens. This is mainstream advice now but still worth checking against your own habits, because it's easy to slide back into \"what goes on this screen\" without noticing.",
+   "**Capture the world around the interaction, including how it feels.** Storyboards force this explicitly and scenarios carry it in the narrative: the physical environment, the other people and objects, the emotional state. An artifact that only shows what happens inside your product misses the constraints that will make or break the real experience. Emotion is not decoration here — frustrated users need different affordances than curious ones, rushed users need different flows than focused ones.",
+   "**Front stage vs. back stage is a mental unlock.** Journey maps live front-stage; service blueprints show the whole production. Most organisations invest in the visible parts and neglect the back-stage systems that actually shape the experience, which is why blueprints so often reveal the biggest opportunities.",
+   "**The 5Es are a solid default structure for any customer experience** — Entice, Enter, Engage, Exit, Extend. Better than the generic \"Awareness → Consideration → Purchase → Retention\" funnel because it captures the whole arc through to the post-experience relationship, and it works for services as well as digital products."
+  ]
+ },
+ {
+  "g": "Keeping artifacts honest",
+  "d": "Why personas, maps and models go bad, and what keeps them useful.",
+  "items": [
+   "**Every foundational artifact needs real research underneath it.** Empathy maps, personas, scenarios, journey maps, mental models, storyboards — all of them become decorative theatre when built from team assumptions. The tool doesn't matter, the evidence beneath it does. For every point on the map, ask: how do I know this, and why can I be sure?",
+   "**Pick the artifact that answers your actual question, and adapt it.** Understanding *reasoning* → mental model. Understanding *timeline* → journey map. Understanding *the operations behind the experience* → service blueprint. Understanding *how one task gets done* → user flow. None of these templates are sacred; adopting one unchanged because \"that's how it's done\" is a fast route to research theatre.",
+   "**Living documents or dead artifacts.** Flows, personas, journey maps and mental models all decay. If you aren't updating them as the product and its users change, they mislead more than they help. Either commit to maintaining them or take them off the wall."
+  ]
+ }
+]

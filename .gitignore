@@ -1,0 +1,7 @@
+# local-only copies: the original source zip and the exported artifact
+*.zip
+Attic — a salvaged UX reading list.html
+Attic — a salvaged UX reading list.md
+# local preview config
+.claude/
+__pycache__/

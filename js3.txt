@@ -1,0 +1,283 @@
+
+const D = window.__D__, $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const PAGES = {principles:"Principles worth carrying", dead:"What didn't survive", about:"About this archive"};
+
+let sec = {kind:'home'};   // home | topic:<cat> | page:<id>
+let cur = null;            // entry index or null
+let q = '';
+
+const tierLabel = t => t==='A' ? 'fully read' : 'summarized';
+const bars = rows => {
+  const max = Math.max(...rows.map(r => r[1]));
+  return `<div class="chart minichart">${rows.map(([lbl,n,alt]) =>
+    `<div class="bar"><span class="lbl">${esc(lbl)}</span>` +
+    `<span class="track"><span class="fill${alt?' alt':''}" style="width:${Math.round(n/max*100)}%"></span></span>` +
+    `<span class="v">${n}</span></div>`).join('')}</div>`;
+};
+const found = () => q ? D.e.filter(e => e.q.includes(q) || e.sum.toLowerCase().includes(q)) : null;
+const inTopic = c => (found() || D.e).filter(e => e.cat.includes(c));
+
+/* ---------------- column 1 ---------------- */
+function renderNav(){
+  const hits = found();
+  let h = '<div class="navsec"><h2>Archive</h2>';
+  for(const c of D.cats){
+    const n = (hits || D.e).filter(e=>e.cat.includes(c)).length;
+    if(hits && !n) continue;
+    h += `<button class="navitem" data-cat="${esc(c)}" aria-current="${sec.kind==='topic'&&sec.cat===c}">
+      <span>${esc(c)}</span><span class="n">${n}</span></button>`;
+  }
+  h += '</div><div class="navsec"><h2>Collection</h2>';
+  h += `<button class="navitem" data-page="principles" aria-current="${sec.kind==='page'&&sec.id==='principles'}"><span>Principles worth carrying</span><span class="n">${D.p.reduce((n,g)=>n+g.items.length,0)}</span></button>`;
+  h += `<button class="navitem" data-page="dead" aria-current="${sec.kind==='page'&&sec.id==='dead'}"><span>What didn't survive</span><span class="n">${D.d.length}</span></button>`;
+  h += `<button class="navitem" data-page="about" aria-current="${sec.kind==='page'&&sec.id==='about'}"><span>About this archive</span></button>`;
+  h += '</div>';
+  $('#nav').innerHTML = h;
+}
+
+/* ---------------- column 2 ---------------- */
+function renderList(){
+  const hits = found();
+  let path, title, blurb, items;
+
+  if(hits && sec.kind!=='page'){
+    path='/search'; title=`${hits.length} ${hits.length===1?'result':'results'}`;
+    blurb=`for “${esc(q)}”`; items=hits;
+  } else if(sec.kind==='topic'){
+    path='/archive'; title=sec.cat; blurb=D.blurb[sec.cat]||''; items=inTopic(sec.cat);
+  } else if(sec.kind==='page'){
+    path='/collection'; title=PAGES[sec.id]; blurb=''; items=[];
+  } else {
+    path='/'; title='Attic'; blurb='Pick a topic to begin, or search.'; items=[];
+  }
+
+  $('#listhead').innerHTML =
+    `<p class="path">${esc(path)}</p><h2>${esc(title)}</h2>${blurb?`<p>${blurb}</p>`:''}`;
+
+  if(!items.length){
+    $('#listscroll').innerHTML = sec.kind==='home'
+      ? `<p class="listempty">Ten topics, ${D.e.length} entries.</p>`
+      : (sec.kind==='page' ? '' : `<p class="listempty">Nothing matches that.</p>`);
+    return;
+  }
+  $('#listscroll').innerHTML = items.map(e=>{
+    const meta = [e.a || e.s, e.y].filter(Boolean).join(' · ');
+    return `<button class="li" data-e="${e.i}" aria-current="${cur===e.i}">
+      ${esc(e.t)}<span class="sub">${esc(meta)}</span></button>`;
+  }).join('');
+}
+
+/* ---------------- column 3 ---------------- */
+function entryHTML(e){
+  const sib = inTopic(sec.kind==='topic' ? sec.cat : e.cat[0]);
+  const k = sib.findIndex(x=>x.i===e.i);
+  const prev = sib[k-1], next = sib[k+1];
+  const bits = [e.a,e.s,e.y].filter(Boolean).map(esc);
+  return `<button class="backbtn" data-back="1">← All entries</button>
+  <p class="crumb">${esc(e.cat[0])}</p>
+  <h2 class="page">${esc(e.t)}</h2>
+  <p class="byline">${bits.map(b=>`<span>${b}</span>`).join('')}<span class="t">${tierLabel(e.tier)}</span></p>
+  <div class="prose">${e.sum}</div>
+  ${e.kp.length?`<div class="cardblock kp"><span class="lab acc">Key points</span><ol>${e.kp.map(x=>`<li><span>${esc(x)}</span></li>`).join('')}</ol></div>`:''}
+  ${e.sr?`<div class="cardblock sr"><span class="lab">Still relevant?</span>${e.sr}</div>`:''}
+  <div class="srcs"><h4>Source${e.links.length>1?'s':''}</h4>
+    ${e.links.map(l=>`<a href="${esc(l.u)}" target="_blank" rel="noopener noreferrer">${esc(l.u)}</a>`).join('')}</div>
+  <div class="tagrow">${e.cat.map(c=>`<button class="tag" data-cat="${esc(c)}">${esc(c)}</button>`).join('')}</div>
+  <nav class="navback">
+    ${prev?`<button data-e="${prev.i}"><span>Previous</span>${esc(prev.t)}</button>`:'<span></span>'}
+    ${next?`<button data-e="${next.i}" style="text-align:right;margin-left:auto"><span>Next</span>${esc(next.t)}</button>`:''}
+  </nav>`;
+}
+
+function topicIntro(c){
+  const items = inTopic(c);
+  return `<p class="crumb">Archive</p><h2 class="page">${esc(c)}</h2>
+    <p class="pagesub">${esc(D.blurb[c]||'')}</p>
+    <p>${items.length} ${items.length===1?'entry':'entries'}. Choose one from the list to read it.</p>`;
+}
+
+function home(){
+  const counts = D.cats.map(c=>({c,n:D.e.filter(e=>e.cat.includes(c)).length}));
+  const max = Math.max(...counts.map(x=>x.n));
+  return `<div class="hero">
+    <h2>A reading list that outlived its course.</h2>
+    <p>Between 2021 and 2022 I collected the supplementary reading from a UX design curriculum. It was optional material, the kind you save and rarely open again. Then the course shut down, the portal closed without warning, and a good share of that reading quietly rotted off the web.</p>
+    <p>This is an attempt to make good on it. <strong>286 saved links</strong>, opened again one at a time: what each piece argued, what still holds, what has been overtaken, and what is simply gone. They are gathered here as ${D.e.length} entries, because the course often assigned several pieces making the same point.</p>
+    <p class="small">Pick a topic on the left, or search.</p>
+  </div>
+  <div class="chart"><h4>What was in it</h4>
+    ${counts.map(x=>`<div class="bar"><span class="lbl">${esc(x.c)}</span>
+      <span class="track"><span class="fill" style="width:${Math.round(x.n/max*100)}%"></span></span>
+      <span class="v">${x.n}</span></div>`).join('')}
+    <div class="bar" style="margin-top:1.1rem"><span class="lbl">Dead links</span>
+      <span class="track"><span class="fill alt" style="width:${Math.round(D.d.length/max*100)}%"></span></span>
+      <span class="v">${D.d.length}</span></div>
+    <div class="legend"><span><i></i>Entries by topic</span><span><i class="alt"></i>Recorded as lost</span></div>
+  </div>
+  <div class="cardgrid">
+    <button class="card" data-page="principles"><b>Principles worth carrying</b><span>${D.p.reduce((n,g)=>n+g.items.length,0)} that kept resurfacing</span></button>
+    <button class="card" data-page="dead"><b>What didn't survive</b><span>${D.d.length} recorded, not deleted</span></button>
+    <button class="card" data-page="about"><b>About this archive</b><span>How it was made</span></button>
+  </div>
+  <div class="notice"><span class="lab">Terms of borrowing</span><p><strong>No accounts, no tracking, no analytics, no cookies, no external requests of any kind.</strong> The typefaces are embedded in the page itself. Save the file and it still works, offline, in ten years.</p></div>`;
+}
+
+const pageHTML = {
+  principles: () => `<p class="crumb">Collection</p><h2 class="page">Principles worth carrying</h2>
+    <p class="pagesub">The things that kept resurfacing, from sources that never cited each other.</p>
+    ${D.p.map(g=>`<section class="pgroup"><h3 class="pgh">${esc(g.g)}</h3><p class="pgd">${esc(g.d)}</p>
+    <ol class="plist">${g.items.map(t=>`<li>${t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>')}</li>`).join('')}</ol></section>`).join('')}`,
+  dead: () => `<p class="crumb">Collection</p><h2 class="page">What didn't survive</h2>
+    <p class="pagesub">Recorded rather than deleted. Knowing what was lost is part of the point.</p>
+    <p class="pnote">Most of these were cut on judgement rather than lost to the web. Only three are gone in the strict sense, where the link expired and left nothing behind to identify it by.</p>
+    ${bars([['Weak or redundant', D.s.kill.weak], ['Tooling that is gone', D.s.kill.tooling], ['Unrecoverable', D.s.kill.lost], ['Video, which is skipped', D.s.kill.video, true]])}
+    <ul class="dead">${D.d.map(d=>`<li><b>${esc(d.t)}</b><span class="u">${esc(d.u)}</span><p>${esc(d.why)}</p></li>`).join('')}</ul>`,
+  about: () => `<p class="crumb">Collection</p><h2 class="page">About this archive</h2><div class="about">
+    <p>Most of what gets published online does not last. Links rot quietly and without notice, and the first things to go are rarely the famous ones. They are the working notes, the explainers, the small useful posts someone wrote once and had no reason to maintain.</p>
+    <p>This archive is a small argument against that. Every link in it was opened and read, and what the piece argued was written down, so that the thinking survives even where the page does not. Fifteen were already gone by the time I reached them. Those are recorded too, because an absence is also a finding.</p>
+    <h4>286 links, 118 entries</h4>
+    <p>Those two numbers do not match, and the gap is the most telling thing about the source material. The course frequently assigned several pieces making the same argument: eight on career next steps, seven on layout grids, six on Gestalt. Each of those clusters is written up once rather than repeated, which is why only about a quarter of the links have an entry to themselves.</p>
+    ${bars([['A link of its own', D.s.solo.links], ['Gathered into clusters', D.s.clust.links], ['Cut and recorded', D.s.killed.links, true]])}
+    <h4>How this was made</h4>
+    <p>The reading and writing was done with <strong>Claude</strong> in 2026. It fetched what was still reachable, worked through the material, and drafted every summary here. I set the scope, decided what was worth keeping, corrected what was wrong, and shaped how it is organized.</p>
+    <p>An archive about preserving other people's writing should be straight about the provenance of its own.</p>
+    <h4>The two labels</h4>
+    <p>Every entry carries a label for how it was produced. <em>Fully read</em> means the original was fetched and worked through before the summary was written. <em>Summarized</em> means it was not reopened, and the summary was written from established knowledge of that material instead. The second kind is the trade that made finishing possible, and it is marked so you always know which you are reading.</p>
+    <h4>The sources</h4>
+    <p>Nothing here reproduces an original article. Every entry paraphrases and links out to the source, which belongs to whoever wrote it. Where a piece is paywalled, moved or gone, that is noted. If something here is yours and you would rather it weren't, that is fair and it will be removed.</p>
+    <h4>The structure</h4>
+    <p>The course ran in six modules. This is organized by topic instead, because the module order only made sense from inside the course.</p>
+    <h4>Privacy</h4>
+    <p>No accounts, no tracking, no analytics, no cookies. The page makes no external requests at all. The typefaces are embedded in the file rather than pulled from a font service, so nothing about your visit leaves your browser.</p>
+    <div class="colophon">One HTML file. No dependencies. No requests. No data collected.<br>
+      Source and data: <a href="https://github.com/gridalchemy/attic" target="_blank" rel="noopener noreferrer">github.com/gridalchemy/attic</a><br>
+      Links saved 2021&ndash;2022. Read, written and assembled with Claude, 2026.</div></div>`
+};
+
+/* ---------------- render ---------------- */
+function render(){
+  renderNav(); renderList();
+  let h;
+  if(cur !== null){ const e = D.e.find(x=>x.i===cur); h = e ? entryHTML(e) : home(); }
+  else if(sec.kind==='topic') h = topicIntro(sec.cat);
+  else if(sec.kind==='page') h = pageHTML[sec.id]();
+  else h = home();
+  $('#main').innerHTML = h;
+  const showList = (sec.kind==='topic') || (q && sec.kind!=='page');
+  document.body.dataset.list = showList ? 'on' : 'off';
+  document.body.dataset.mode = cur!==null ? 'detail' : 'browse';
+  $('#scroller').scrollTop = 0; window.scrollTo(0,0);
+  document.body.dataset.nav = '';
+}
+
+/* ---------------- deep links ---------------- */
+// A published artifact only passes through a bare #token (letters, digits and
+// . _ ~ -). It never passes #key=value and never a query string, so the whole
+// state is encoded as ONE key: an entry id, a topic slug, or a page id.
+// The build guarantees those 131 keys are unique and hash-safe.
+const PAGE_KEYS = Object.keys(PAGES);
+const catForSlug = s => D.cats.find(c => D.slug[c] === s);
+
+function hashFor(){
+  if(cur !== null){ const e = D.e.find(x => x.i === cur); if(e) return e.k; }
+  if(sec.kind === 'topic') return D.slug[sec.cat] || '';
+  if(sec.kind === 'page')  return sec.id;
+  return '';
+}
+
+function applyHash(){
+  const h = (location.hash || '').replace(/^#/, '').trim().toLowerCase();
+  q = ''; const qi = $('#q'); if(qi) qi.value = '';
+  if(!h){ sec = {kind:'home'}; cur = null; return; }
+  if(PAGE_KEYS.includes(h)){ sec = {kind:'page', id:h}; cur = null; return; }
+  const cat = catForSlug(h);
+  if(cat){ sec = {kind:'topic', cat}; cur = null; return; }
+  const e = D.e.find(x => x.k === h);
+  if(e){ sec = {kind:'topic', cat:e.cat[0]}; cur = e.i; return; }
+  sec = {kind:'home'}; cur = null;          // unknown key: fail to the front page
+}
+
+let navLock = false;
+function syncURL(replace){
+  const h = hashFor();
+  if((location.hash || '').replace(/^#/, '') === h) return;
+  const url = h ? '#' + h : location.pathname + location.search;
+  navLock = true;
+  try{
+    history[replace ? 'replaceState' : 'pushState'](null, '', url);
+  }catch(err){
+    location.hash = h;        // some embedded frames refuse history writes
+  }
+  setTimeout(() => { navLock = false; }, 0);
+}
+
+function go(){ render(); syncURL(false); }
+function onRoute(){ if(navLock) return; applyHash(); render(); }
+addEventListener('popstate', onRoute);
+addEventListener('hashchange', onRoute);
+
+document.addEventListener('click', ev=>{
+  const t = ev.target.closest('[data-e],[data-cat],[data-page],[data-back],.brand,#menubtn,.scrim');
+  if(!t) return;
+  if(t.classList.contains('scrim')||t.id==='menubtn'){
+    document.body.dataset.nav = document.body.dataset.nav==='open'?'':'open'; return;
+  }
+  if(t.classList.contains('brand')){ sec={kind:'home'}; cur=null; q=''; $('#q').value=''; return go(); }
+  if(t.dataset.back){ cur=null; return go(); }
+  if(t.dataset.page){ sec={kind:'page',id:t.dataset.page}; cur=null; return go(); }
+  if(t.dataset.e!==undefined){
+    const e = D.e.find(x=>x.i===+t.dataset.e);
+    if(sec.kind!=='topic' || !e.cat.includes(sec.cat)){
+      if(!q) sec={kind:'topic',cat:e.cat[0]};
+    }
+    cur = e.i; return go();
+  }
+  if(t.dataset.cat){
+    sec={kind:'topic',cat:t.dataset.cat};
+    const first = inTopic(sec.cat)[0];
+    cur = first ? first.i : null;
+    return go();
+  }
+});
+
+$('#q').addEventListener('input', e=>{
+  q = e.target.value.trim().toLowerCase();
+  if(q && sec.kind==='page') sec={kind:'home'};
+  const hits = found();
+  cur = (q && hits && hits.length) ? hits[0].i : null;
+  render(); syncURL(true);          // replace, so a search is not 20 history entries
+});
+
+// --- footer controls: accent colour, light / dark ---
+const R = document.documentElement, MQ = matchMedia('(prefers-color-scheme: dark)');
+
+// light / dark: follow the system until the reader chooses, then keep their choice
+let modeLocked = false;
+function setMode(m){
+  R.dataset.mode = m;
+  const b = $('#modetog');
+  if(b) b.setAttribute('aria-label', m==='dark' ? 'Switch to light mode' : 'Switch to dark mode');
+}
+try{ const s = localStorage.getItem('mode'); if(s==='dark'||s==='light'){ modeLocked = true; setMode(s); } }catch(e){}
+if(!modeLocked) setMode(MQ.matches ? 'dark' : 'light');
+MQ.addEventListener('change', e => { if(!modeLocked) setMode(e.matches ? 'dark' : 'light'); });
+$('#modetog').addEventListener('click', () => {
+  const next = R.dataset.mode==='dark' ? 'light' : 'dark';
+  modeLocked = true; setMode(next);
+  try{ localStorage.setItem('mode', next); }catch(e){}
+});
+
+// accent colour
+const PALS = ['madder','plum'];
+function setPal(p){ if(PALS.includes(p)) R.dataset.pal = p; }
+try{ const s = localStorage.getItem('pal'); if(s) setPal(s); }catch(e){}
+$('#paltog').addEventListener('click', () => {
+  const next = PALS[(PALS.indexOf(R.dataset.pal) + 1) % PALS.length];
+  setPal(next);
+  try{ localStorage.setItem('pal', next); }catch(e){}
+});
+
+applyHash();
+render();
+syncURL(true);
