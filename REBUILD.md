@@ -54,6 +54,5 @@ Spline Sans Mono 400, Martian Mono 400, Courier Prime 400.
   .bar .fill, .cardgrid, .cardblock, .hero h2, .legend
   (a careless CSS splice deleted all of them once)
 - every font-size lands on an even pixel value
-- no second-person address to a specific reader (no 'your career', 'your job
-  hunt', 'your B2B background', 'relevant to you'). Generic instructional
+- no second-person address to a specific reader. Generic instructional
   'you' is fine; assuming who the reader is, is not. The archive is public.
