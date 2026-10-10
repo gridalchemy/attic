@@ -1,5 +1,7 @@
 fonts=open('fonts.css',encoding='utf-8').read(); CSS=open('css3.txt',encoding='utf-8').read(); JS=open('js3.txt',encoding='utf-8').read()
 data=open('data.json',encoding='utf-8').read()
+import base64
+fav=base64.b64encode(open('peri-favicon.svg','rb').read()).decode()
 H=f"""<!DOCTYPE html>
 <html lang="en" data-pal="madder" data-mode="light" data-disp="newsreader" data-body="literata" data-sans="instrument" data-mono="spline">
 <head>
@@ -7,6 +9,27 @@ H=f"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Attic — a salvaged UX reading list</title>
 <meta name="description" content="286 links of supplementary reading from a UX design curriculum that no longer exists, read again and written up. No tracking, no logins, no external requests.">
+<link rel="canonical" href="https://gridalchemy.github.io/attic/">
+<!-- Social preview. Read only by link crawlers, never fetched by a visitor's
+     browser, so the page still makes zero external requests. -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gridalchemy.github.io/attic/">
+<meta property="og:site_name" content="Attic">
+<meta property="og:title" content="Attic — a salvaged UX reading list">
+<meta property="og:description" content="286 links of supplementary reading from a UX design curriculum that no longer exists, read again and written up as 118 entries.">
+<meta property="og:image" content="https://gridalchemy.github.io/attic/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Attic — a salvaged reading list. 286 links, read again and written up as 118 entries.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Attic — a salvaged UX reading list">
+<meta name="twitter:description" content="286 links of supplementary reading from a UX design curriculum that no longer exists, read again and written up as 118 entries.">
+<meta name="twitter:image" content="https://gridalchemy.github.io/attic/og.png">
+<!-- Favicon inlined as a data URI, so the tab icon is not a request either. -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,{fav}">
+<meta name="theme-color" content="#F4F5EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#21261A" media="(prefers-color-scheme: dark)">
 <style>{fonts}</style>
 <style>{CSS}</style>
 </head>

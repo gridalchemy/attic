@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+/* Madder, light. Same tokens as the site. */
+:root{
+  --paper:#F4F5EC; --band:#C3CCAE; --ink:#1D2816; --ink3:#4B5740;
+  --accent:#862721; --rule:rgba(29,40,22,.14);
+  --peri-bulb:var(--accent);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{display:flex;background:var(--paper);
+  font-family:'Spline Sans Mono',ui-monospace,monospace;-webkit-font-smoothing:antialiased}
+
+.band{width:300px;flex:0 0 300px;background:var(--band);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:56px 48px}
+.band .peri{color:var(--ink3)}
+.band svg{display:block}
+
+.main{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;
+  padding:0 80px}
+h1{font-family:'Newsreader',Georgia,serif;font-weight:700;font-size:136px;
+  line-height:.9;letter-spacing:-.03em;color:var(--ink)}
+h1 .dot{color:var(--accent)}
+.tag{font-size:24px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink3);margin-top:28px}
+.rule{height:1px;background:var(--rule);margin:44px 0 0}
+.meta{font-size:20px;letter-spacing:.01em;color:var(--ink3);margin-top:28px;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.meta b{color:var(--ink);font-weight:400}
+</style>
+</head>
+<body>
+  <div class="band">
+    <span class="peri">
+      <svg viewBox="0 0 32 32" width="84" height="84" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M 7.83 10.54 A 4 4 0 0 1 10.63 9.4 L 21.37 9.4 A 4 4 0 0 1 24.17 10.54 L 26.5 12.83 A 5 5 0 0 1 28 16.4 L 28 19.63 A 5 5 0 0 1 27.48 21.85 L 24.67 27.56 A 2.6 2.6 0 0 0 24.4 28.71 L 24.4 29.05 A 0.95 0.95 0 0 1 23.45 30 L 20.5 30 A 1.3 1.3 0 0 1 19.22 28.91 L 19.2 28.8 A 1.44 1.44 0 0 0 17.78 27.6 L 14.22 27.6 A 1.44 1.44 0 0 0 12.8 28.8 L 12.78 28.91 A 1.3 1.3 0 0 1 11.5 30 L 8.55 30 A 0.95 0.95 0 0 1 7.6 29.05 L 7.6 28.71 A 2.6 2.6 0 0 0 7.33 27.56 L 4.52 21.85 A 5 5 0 0 1 4 19.63 L 4 16.4 A 5 5 0 0 1 5.5 12.83 Z"/>
+          <path d="M 16 10.4 L 16 7.4"/>
+          <path d="M 10.6 17 h 0.01 M 21.4 17 h 0.01" stroke-width="4.3"/>
+        </g>
+        <circle cx="16" cy="4.6" r="2.3" fill="var(--peri-bulb)"/>
+      </svg>
+    </span>
+  </div>
+
+  <div class="main">
+    <h1>Attic<span class="dot">.</span></h1>
+    <p class="tag">A salvaged reading list</p>
+    <div class="rule"></div>
+    <p class="meta"><b>286</b> links, read again and written up as <b>118</b> entries</p>
+  </div>
+</body>
+</html>

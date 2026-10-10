@@ -30,7 +30,9 @@ Run these against the freshly built `index.html`. All must pass.
 
 - [ ] **Zero external resource loads.** No `src="http`, no `<link href="http`,
       no `url(http` in CSS, no iframes. One external `<a href>` is expected and
-      correct: Peri's link to the portfolio.
+      correct: Peri's link to the portfolio. Also expected: `<link rel="canonical">`
+      and the `og:`/`twitter:` meta tags. They are metadata that browsers never fetch;
+      only link crawlers read them. The favicon must stay a `data:` URI.
 - [ ] **18 `@font-face` rules, 18 base64 woff2 data URIs.** If these numbers drop,
       `fonts.css` did not load and the page is silently using fallback fonts.
 - [ ] **Embedded JSON parses**, and contains 118 live entries, 15 dead, 27 principles
