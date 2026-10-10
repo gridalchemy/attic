@@ -5,6 +5,8 @@
 In 2021–2022 I saved 286 links of supplementary reading from a UX design
 program. The program and its platform have since shut down. In 2026 I went
 back through every link, kept what still worked, read it, and wrote it up.
+The one link left out, the old course sign-in page, is the reason the rest
+exists.
 
 286 saved links → 118 entries, plus 15 recorded as lost.
 143 links were absorbed into clusters where several pieces made the same
