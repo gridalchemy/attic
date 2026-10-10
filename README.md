@@ -62,4 +62,4 @@ Links saved 2021–2022. Read, written and assembled with Claude, 2026.
 Every entry paraphrases and links out to its source, which belongs to whoever
 wrote it.
 
-Made by [Iulia](https://icvc.framer.website/).
+Made by [gridalchemy](https://icvc.framer.website/).
