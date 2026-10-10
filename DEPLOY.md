@@ -93,3 +93,11 @@ Then rebuild, re-run the step 3 checks, and commit.
       again, and the URL dies for everyone who has it.
 - [ ] From here on: edit the source, rebuild once, deploy to both. `kb.json` and the
       build scripts are the source of truth; the two URLs are just outputs.
+
+## 8. Before sharing a link
+
+- [ ] Open `https://gridalchemy.github.io/attic/og.png` directly and confirm it loads.
+- [ ] Share the GitHub Pages URL, not the artifact URL: the preview tags describe it.
+- [ ] Platforms cache link previews. If a card shows stale text or no image, run the
+      URL through that platform's own preview or debug tool to re-scrape it before
+      posting.

@@ -10,6 +10,11 @@ between sessions, so nothing here survives otherwise.
                    key_points, still_relevant, url, extra_urls, kill_reason.
                    Optional unlisted_urls: saved links that count toward
                    the 286 but are not shown (e.g. the course sign-in page).
+                   This is deliberate, not drift: 286 is how many unique URLs
+                   were saved in 2021-22, and that fact does not change because
+                   one of them leads nowhere. 260 render as sources, 25 sit on
+                   the dead page, 1 is unlisted. Do not move the sign-in URL
+                   back to extra_urls, and do not change any 286 to 285.
 - `principles.json` — 27 principles in 6 themed groups
                    (was 38 flat; merged Oct 2026). Shape: [{g, d, items[]}].
 - `master.json`  — original Pearltrees inventory, 286 unique links, with
@@ -21,6 +26,19 @@ between sessions, so nothing here survives otherwise.
 - `fonts.css`    — base64-embedded woff2 faces. INCLUDED NOW, so the npm
                    step below is only needed if a typeface changes.
 - `data.json`    — generated; rebuild it rather than editing it.
+- `peri-favicon.svg` — the tab icon: filled Peri in the Madder palette, with
+                   its own light/dark media query, because a tab icon cannot
+                   inherit page CSS (light: body #1D2816, antenna #862721;
+                   dark: body #DCE1B9, antenna #F98F82). page3.py embeds it as
+                   a base64 data URI. Never link it as a file: that would be an
+                   external request. The filled variant is deliberate; the
+                   outline Peri from the footer disappears at 16px.
+- `og.png`       — the social preview card, 1200x630. Only link crawlers fetch
+                   it, never a visitor's browser. Its URL is hard-coded in the
+                   og:/twitter: tags in page3.py, so it must stay at the root.
+- `brand/`       — sources, not used by the build. `og-card.html` renders
+                   og.png (fonts inlined; 1200x630 at device scale factor 1);
+                   `favicon-preview.png` shows the favicon at 16-128px.
 
 ## Rebuild
 ```bash
