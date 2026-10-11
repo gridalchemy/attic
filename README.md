@@ -42,6 +42,9 @@ or assembles around it.
 | `css3.txt`, `js3.txt` | Stylesheet and app logic |
 | `fonts.css` | Embedded woff2 typefaces. Required: the build fails without it |
 | `data.json` | Generated, kept so the repo is clone-and-open |
+| `peri-favicon.svg` | Tab icon, embedded in the page as a data URI so it isn't a request |
+| `og.png` | Social preview card, fetched only by link crawlers, never by a visitor's browser |
+| `brand/` | Sources: the HTML `og.png` is rendered from, and a favicon preview sheet |
 
 ## Rebuild
 
