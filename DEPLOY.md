@@ -29,8 +29,9 @@ needed; unzip it into the repo root first.
 Run these against the freshly built `index.html`. All must pass.
 
 - [ ] **Zero external resource loads.** No `src="http`, no `<link href="http`,
-      no `url(http` in CSS, no iframes. One external `<a href>` is expected and
-      correct: Peri's link to the portfolio. Also expected: `<link rel="canonical">`
+      no `url(http` in CSS, no iframes. External `<a href>`s are expected and
+      correct: Peri's link to the portfolio, and the "Impressum & Datenschutz" link
+      to `icvc.framer.website/legal` (sidebar footer and About colophon). Also expected: `<link rel="canonical">`
       and the `og:`/`twitter:` meta tags. They are metadata that browsers never fetch;
       only link crawlers read them. The favicon must stay a `data:` URI.
 - [ ] **18 `@font-face` rules, 18 base64 woff2 data URIs.** If these numbers drop,

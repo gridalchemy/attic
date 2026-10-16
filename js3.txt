@@ -149,9 +149,10 @@ const pageHTML = {
     <h4>The structure</h4>
     <p>The course ran in six modules. This is organized by topic instead, because the module order only made sense from inside the course.</p>
     <h4>Privacy</h4>
-    <p>No accounts, no tracking, no analytics, no cookies. The page makes no external requests at all. The typefaces are embedded in the file rather than pulled from a font service, so nothing about your visit leaves your browser.</p>
+    <p>No accounts, no tracking, no analytics, no cookies. The page makes no external requests at all: the typefaces are embedded in the file rather than pulled from a font service. The only record of your visit is the standard server log kept by the host.</p>
     <div class="colophon">One HTML file. No dependencies. No requests. No data collected.<br>
       Source and data: <a href="https://github.com/gridalchemy/attic" target="_blank" rel="noopener noreferrer">github.com/gridalchemy/attic</a><br>
+      Impressum &amp; Datenschutz: <a href="https://icvc.framer.website/legal" target="_blank" rel="noopener noreferrer">icvc.framer.website/legal</a><br>
       Links saved 2021&ndash;2022. Read, written and assembled with Claude, 2026.</div></div>`
 };
 

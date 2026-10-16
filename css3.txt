@@ -92,7 +92,10 @@ body{margin:0;height:100%;background:var(--paper);color:var(--ink2);font-family:
 .navfoot{flex:0 0 auto;padding:.9rem 1.1rem calc(.9rem + env(safe-area-inset-bottom,0px));
   border-top:1px solid var(--navrule);font-family:var(--mono);font-size:.75rem;color:var(--navink2);
   line-height:1.6}
-.navfoot .counts{margin:0 0 1.25rem}
+.navfoot .counts{margin:0 0 .75rem}
+.navfoot .legal{margin:0 0 1.25rem}
+.navfoot .legal a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.navfoot .legal a:hover{color:var(--navaccent);text-decoration-color:var(--navaccent)}
 .navfoot .tools{display:flex;align-items:center;justify-content:space-between;gap:.75rem}
 .navfoot .toolpair{display:flex;gap:.5rem}
 .stamp{width:2.5rem;height:2.5rem;flex:0 0 auto;display:grid;place-items:center;

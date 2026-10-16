@@ -55,6 +55,7 @@ H=f"""<!DOCTYPE html>
   <div class="navscroll" id="nav"></div>
   <div class="navfoot">
     <p class="counts">118 entries<br>286 links read</p>
+    <p class="legal"><a href="https://icvc.framer.website/legal" target="_blank" rel="noopener noreferrer">Impressum &amp; Datenschutz</a></p>
     <div class="tools">
       <a class="stamp" id="stamp" href="https://icvc.framer.website/" target="_blank" rel="noopener noreferrer" aria-label="Peri — gridalchemy's portfolio">
         <svg viewBox="0 0 32 32" width="24" height="24" fill="none" aria-hidden="true">
